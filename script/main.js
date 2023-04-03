@@ -98,22 +98,18 @@ do {
 
 // Indicación de los dias del mes
 if ((mes == "ENERO") || (mes == "MARZO") || (mes == "MAYO") || (mes == "JULIO") || (mes == "AGOSTO") || (mes == "OCTUBRE") || (mes == "DICIEMBRE")) {
-    let cantidadDiasMes = 31;
-    calculoDiaProxPeriodo(cantidadDiasMes);
-    calculoMesProxPeriodo(cantidadDiasMes);
-    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes +  " dias")
+    cantidadDiasMes = 31;
+    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes + " dias")
 } else if (mes == "FEBRERO") {
-    let cantidadDiasMes = 28;
-    calculoDiaProxPeriodo(cantidadDiasMes);
-    calculoMesProxPeriodo(cantidadDiasMes);
-    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes +  " dias")
+    cantidadDiasMes = 28;
+    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes + " dias")
 } else {
-    let cantidadDiasMes = 30;
-    calculoDiaProxPeriodo(cantidadDiasMes);
-    calculoMesProxPeriodo(cantidadDiasMes);
-    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes +  " dias")
+    cantidadDiasMes = 30;
+    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes + " dias")
 }
 
+calculoDiaProxPeriodo(cantidadDiasMes);
+calculoMesProxPeriodo(cantidadDiasMes);
 
 console.log("Tu próximo periodo va a ser el " + diaProximaMenstruacion + " de " + proximoMesPeriodo);
 alert("Tu próximo periodo va a ser el " + diaProximaMenstruacion + " de " + proximoMesPeriodo);
