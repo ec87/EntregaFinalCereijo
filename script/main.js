@@ -1,117 +1,70 @@
-//inicio declaracion de las funciones
-
-//función para calcular en cuantos días totales comienza el periodo menstrual
-function calculoPeriodoTotal(diaUltimoPeriodo, duracionCiclo) {
-    duracionPeriodoTotal = diaUltimoPeriodo + duracionCiclo;
-    console.log("La duración del periodo es de: " + duracionPeriodoTotal + " días");
-}
-
-//función para calcular el día que comienza el periodo mentrual adaptado al calendario
-function calculoDiaProxPeriodo(cantidadDiasMes) {
-    if (duracionPeriodoTotal > cantidadDiasMes) {
-        diaProximaMenstruacion = duracionPeriodoTotal - cantidadDiasMes;
-    } else {
-        diaProximaMenstruacion = duracionPeriodoTotal;
+//Inicio Clases
+class Menstruante {
+    constructor(nombre, cicloInicial, duracionUltimoPeriodo, duracionSangrado, listaProximosPeriodos) {
+        this.nombre = nombre.toUpperCase();
+        this.cicloInicial = new Date(cicloInicial);
+        this.duracionUltimoPeriodo = parseInt(duracionUltimoPeriodo);
+        this.duracionSangrado = parseInt(duracionSangrado);
+        this.listaProximosPeriodos = listaProximosPeriodos;
     }
-    console.log("El día de tu próximo periodo es: " + diaProximaMenstruacion);
 }
 
-//función para calcular el mes que comienza el periodo mentrual adaptado al calendario
-function calculoMesProxPeriodo(cantidadDiasMes) {
-    if (duracionPeriodoTotal > cantidadDiasMes) {
-        switch (mes) {
-            case "ENERO":
-                proximoMesPeriodo = "FEBRERO"
-                break;
-            case "FEBRERO":
-                proximoMesPeriodo = "MARZO"
-                break;
-            case "MARZO":
-                proximoMesPeriodo = "ABRIL"
-                break;
-            case "ABRIL":
-                proximoMesPeriodo = "MAYO"
-                break;
-            case "MAYO":
-                proximoMesPeriodo = "JUNIO"
-                break;
-            case "JUNIO":
-                proximoMesPeriodo = "JULIO"
-                break;
-            case "JULIO":
-                proximoMesPeriodo = "AGOSTO"
-                break;
-            case "AGOSTO":
-                proximoMesPeriodo = "SEPTIEMBRE"
-                break;
-            case "SEPTIEMBRE":
-                proximoMesPeriodo = "OCTUBRE"
-                break;
-            case "OCTUBRE":
-                proximoMesPeriodo = "NOVIEMBRE"
-                break;
-            case "NOVIEMBRE":
-                proximoMesPeriodo = "DICIEMBRE"
-                break;
-            case "DICIEMBRE":
-                proximoMesPeriodo = "ENERO"
-                break;
-            default:
-                break;
-        }
-
-    } else {
-        proximoMesPeriodo = mes
+class Periodo {
+    constructor(fechaInicioPeriodo, duracionPeriodo, mesPeriodo) {
+        this.fechaInicioPeriodo = new Date(fechaInicioPeriodo);
+        this.duracionPeriodo = parseInt(duracionPeriodo);
+        this.mesPeriodo = mesPeriodo;
     }
-    console.log("El mes de tu próximo periodo es: " + proximoMesPeriodo);
+}
+// Fin Clases
+
+// Inicio Funciones
+function proximoPeriodo(fechaMenstruacion, duracionUltimoPeriodo) {
+    let fecha = new Date(fechaMenstruacion);
+    let p = new Periodo(new Date, duracionUltimoPeriodo, "");
+    p.fechaInicioPeriodo = new Date(fecha.setDate(fechaMenstruacion.getDate() + duracionUltimoPeriodo));
+    p.mesPeriodo = monthNames[p.fechaInicioPeriodo.getMonth()];
+    return p
 }
 
-// fin declaracion de funciones
+function filtroMes(mesBuscado, listaEspecifica) {
+    return listaEspecifica.filter((unPeriodo) => unPeriodo.mesPeriodo.includes(mesBuscado.toUpperCase()));
+}
 
-//inicio declaracion de las variables
-let duracionPeriodoTotal = 0;
-let duracionCiclo = 0;
-let diaUltimoPeriodo = 0;
-let diaProximaMenstruacion = 0;
-let mes = "";
-let proximoMesPeriodo;
-let cantidadDiasMes;
-//fin de declaracion de las variables
+//Fin Funciones
 
-//Ciclo de ingreso de dias periodo y día de última mentruación
+//Inicio constantes
+const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+    "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
+];
+//Fin constantes
+
+//Instanciación de objeto clase Menstruante
+let menstruante1 = new Menstruante("", Date, 0, 0, []);
+menstruante1.nombre = prompt("¿Cuál es tu nombre?");
+//Inicio Control Datos
 do {
-    duracionCiclo = parseInt(prompt("¿Cuántos días dura tu ciclo?"));
-    console.log("Tu ciclo dura " + duracionCiclo + " días");
-    diaUltimoPeriodo = parseInt(prompt("Día de inicio de tu útimo periodo"));
-    console.log("El día de tu último periodo es " + diaUltimoPeriodo);
-} while ((isNaN(duracionCiclo)) || (isNaN(diaUltimoPeriodo)));
+    let dia = parseInt(prompt("Día de tu última menstruación"));
+    let mes = parseInt(prompt("Número de mes de tu última menstruación (sin 0)"));
+    let anio = parseInt(prompt("Año de tu última menstruación"));
+    menstruante1.duracionUltimoPeriodo = parseInt(prompt("Días de duración de tu último periodo"));
+    menstruante1.duracionSangrado = parseInt(prompt("Días de duración de tu último sangrado"));
+} while ((isNaN(dia)) || (isNaN(mes)) || (isNaN(anio)) || (isNaN(menstruante1.duracionUltimoPeriodo)) || (isNaN(menstruante1.duracionSangrado)));
+//Fin Control Datos
+menstruante1.cicloInicial = new Date(anio, mes - 1, dia);
+menstruante1.listaProximosPeriodos.push(new Periodo(menstruante1.cicloInicial, menstruante1.duracionUltimoPeriodo, monthNames[mes - 1]));
+console.log("Datos de persona mentruante: ", menstruante1);
+//Fin de objeto
 
-//Condicional y cálculo en cuantos días totales comienza el periodo menstrual
-if (duracionCiclo > 0 && diaUltimoPeriodo > 0) {
-    calculoPeriodoTotal(diaUltimoPeriodo, duracionCiclo);
+//Inicio Ciclo para calculo de fechas de menstruación
+for (let i = 0; i < 11; i++) {
+    let periodoGenerado = proximoPeriodo(menstruante1.listaProximosPeriodos[i].fechaInicioPeriodo, menstruante1.duracionUltimoPeriodo);
+    menstruante1.listaProximosPeriodos.push(periodoGenerado);
 }
+console.log("Lista de los siguientes 12 periodos ", menstruante1.listaProximosPeriodos);
+//Fin Ciclo para calculo de fechas de menstruación
 
-//Ciclo de ingreso del mes menstruación
-do {
-    mes = prompt("Mes de tu útimo periodo").toUpperCase();
-} while (!((mes == ("ENERO")) || (mes == ("MARZO")) || (mes == ("MAYO")) || (mes == ("JULIO")) || (mes == ("AGOSTO")) || (mes == ("OCTUBRE")) || (mes == ("DICIEMBRE")) || (mes == ("FEBRERO")) || (mes == ("ABRIL")) || (mes == ("JUNIO")) || (mes == ("SEPTIEMBRE")) || (mes == ("NOVIEMBRE"))));
-
-// Indicación de los dias del mes
-if ((mes == "ENERO") || (mes == "MARZO") || (mes == "MAYO") || (mes == "JULIO") || (mes == "AGOSTO") || (mes == "OCTUBRE") || (mes == "DICIEMBRE")) {
-    cantidadDiasMes = 31;
-    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes + " dias")
-} else if (mes == "FEBRERO") {
-    cantidadDiasMes = 28;
-    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes + " dias")
-} else {
-    cantidadDiasMes = 30;
-    console.log("El mes ingresado es " + mes + ", que tiene " + cantidadDiasMes + " dias")
-}
-
-calculoDiaProxPeriodo(cantidadDiasMes);
-calculoMesProxPeriodo(cantidadDiasMes);
-
-console.log("Tu próximo periodo va a ser el " + diaProximaMenstruacion + " de " + proximoMesPeriodo);
-alert("Tu próximo periodo va a ser el " + diaProximaMenstruacion + " de " + proximoMesPeriodo);
-
-
+//Inicio filtro del mes a consultar.
+let mesBuscado = prompt("mes a buscar");
+console.log("La/s fecha/s de menstruación del mes buscado es/son ", filtroMes(mesBuscado, menstruante1.listaProximosPeriodos));
+//fin filtro del mes a consultar
