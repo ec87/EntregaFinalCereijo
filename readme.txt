@@ -23,6 +23,8 @@ Se piden ademas más datos que futuramente optimizaran el procesamiento de datos
 - Información de la fecha del siguiente periodo menstrual
 - Calculo de las siguientes 12 menstruaciones.
 - Filtrado de lista de menstruaciones de un mes solicitado.
+- Almacenado en JSON para mantener datos en caso de refrescar la página, y ademas, utilizarlo en otros js (como el buscador) sin que reingrese los datos.
+- Actualización sencilla de datos simplemente modificando el formulario inicial.
 
 ## Por donde se le pide información al usuario
 
@@ -30,4 +32,4 @@ Las interacciones se realizan por medio de formularios y buscador (select).
 
 ## Como se le devuelve la info al usuario
 
-Las informaciones se devuelven por medio de div y card.
+Las informaciones se devuelven por medio de cuadros de textos, div y card (que ademas, tiene un boton que nos lleva al buscador de periodos).
