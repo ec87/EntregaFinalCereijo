@@ -1,3 +1,5 @@
+let menstruantesJSON = [];
+
 //Inicio Clases
 class Menstruante {
     constructor(nombre, cicloInicial, duracionUltimoPeriodo, duracionSangrado, listaProximosPeriodos) {
@@ -16,55 +18,62 @@ class Periodo {
         this.mesPeriodo = mesPeriodo;
     }
 }
-// Fin Clases
 
 // Inicio Funciones
 function proximoPeriodo(fechaMenstruacion, duracionUltimoPeriodo) {
     let fecha = new Date(fechaMenstruacion);
     let p = new Periodo(new Date, duracionUltimoPeriodo, "");
-    p.fechaInicioPeriodo = new Date(fecha.setDate(fechaMenstruacion.getDate() + duracionUltimoPeriodo));
+    p.fechaInicioPeriodo = new Date(fecha.setDate(fecha.getDate() + duracionUltimoPeriodo));
     p.mesPeriodo = monthNames[p.fechaInicioPeriodo.getMonth()];
     return p
 }
 
-function filtroMes(mesBuscado, listaEspecifica) {
-    return listaEspecifica.filter((unPeriodo) => unPeriodo.mesPeriodo.includes(mesBuscado.toUpperCase()));
+function validarFormulario(data) {
+    console.log("Formulario enviado");
+    menstruante1.nombre = document.getElementById("nombre").value;
+    menstruante1.cicloInicial = new Date(document.getElementById("fechaUltimaMenstruacion").value.replaceAll("-", "/"));
+    menstruante1.duracionUltimoPeriodo = document.getElementById("duracionUltimoPeriodo").valueAsNumber;
+    menstruante1.duracionSangrado = document.getElementById("duracionUltimoSangrado").valueAsNumber;
+    menstruante1.cicloInicial = new Date(menstruante1.cicloInicial);
+    menstruante1.listaProximosPeriodos = new Array(new Periodo(menstruante1.cicloInicial, menstruante1.duracionUltimoPeriodo, monthNames[menstruante1.cicloInicial.getMonth()]));
+    //Inicio Ciclo para calculo de fechas de menstruación
+    for (let i = 0; i < 11; i++) {
+        let periodoGenerado = proximoPeriodo(menstruante1.listaProximosPeriodos[i].fechaInicioPeriodo, menstruante1.duracionUltimoPeriodo);
+        menstruante1.listaProximosPeriodos.push(periodoGenerado);
+    }
+    localStorage.setItem("menstruantes", JSON.stringify(menstruante1));
 }
 
-//Fin Funciones
+function filtrarPeriodoPorMes(mes) {
+    return menstruante1.listaProximosPeriodos.filter((periodo) => periodo.mesPeriodo == mes)
+}
+
+function mostrarProximoPeriodo () {
+    let fechaProximoPeriodo = filtrarPeriodoPorMes(monthNames[new Date ().getMonth()]);
+    document.getElementById("proximaMenstruacion").textContent= fechaProximoPeriodo[0].fechaInicioPeriodo.toLocaleDateString();
+    }
 
 //Inicio constantes
 const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
 ];
-//Fin constantes
 
 //Instanciación de objeto clase Menstruante
 let menstruante1 = new Menstruante("", Date, 0, 0, []);
-menstruante1.nombre = prompt("¿Cuál es tu nombre?");
-//Inicio Control Datos
-do {
-    let dia = parseInt(prompt("Día de tu última menstruación"));
-    let mes = parseInt(prompt("Número de mes de tu última menstruación (sin 0)"));
-    let anio = parseInt(prompt("Año de tu última menstruación"));
-    menstruante1.duracionUltimoPeriodo = parseInt(prompt("Días de duración de tu último periodo"));
-    menstruante1.duracionSangrado = parseInt(prompt("Días de duración de tu último sangrado"));
-} while ((isNaN(dia)) || (isNaN(mes)) || (isNaN(anio)) || (isNaN(menstruante1.duracionUltimoPeriodo)) || (isNaN(menstruante1.duracionSangrado)));
-//Fin Control Datos
-menstruante1.cicloInicial = new Date(anio, mes - 1, dia);
-menstruante1.listaProximosPeriodos.push(new Periodo(menstruante1.cicloInicial, menstruante1.duracionUltimoPeriodo, monthNames[mes - 1]));
-console.log("Datos de persona mentruante: ", menstruante1);
-//Fin de objeto
-
-//Inicio Ciclo para calculo de fechas de menstruación
-for (let i = 0; i < 11; i++) {
-    let periodoGenerado = proximoPeriodo(menstruante1.listaProximosPeriodos[i].fechaInicioPeriodo, menstruante1.duracionUltimoPeriodo);
-    menstruante1.listaProximosPeriodos.push(periodoGenerado);
+if (!(localStorage.getItem("menstruantes"))) {
+    localStorage.setItem("menstruantes", JSON.stringify(menstruante1));
 }
-console.log("Lista de los siguientes 12 periodos ", menstruante1.listaProximosPeriodos);
-//Fin Ciclo para calculo de fechas de menstruación
 
-//Inicio filtro del mes a consultar.
-let mesBuscado = prompt("mes a buscar");
-console.log("La/s fecha/s de menstruación del mes buscado es/son ", filtroMes(mesBuscado, menstruante1.listaProximosPeriodos));
-//fin filtro del mes a consultar
+//Recuperación de cada uno de los input del formulario
+const formulario = document.getElementById("formulario");
+
+//Ejecución evento submit
+formulario.addEventListener("submit", (event) => {
+    event.preventDefault();
+    validarFormulario(event.target);
+    mostrarProximoPeriodo();
+
+});
+
+menstruantesJSON = JSON.parse(localStorage.getItem("menstruantes"));
+menstruante1 = menstruantesJSON;
