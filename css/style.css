@@ -1,0 +1,75 @@
+.div-center {
+    display: flex;
+    justify-content: center;
+    align-items: space-between;
+    flex-wrap: wrap;
+    padding: 1.8rem 2rem;
+    /*   width: 100;
+    height: 100;*/
+}
+
+.bg-fondo {
+    background-image: url(../src/img/moroccan-flower.png);
+    background-repeat: repeat;
+    background-position: center top;
+    width: 100%;
+}
+
+/* fondos */
+.background-pink1 {
+    background-color: #FF00F2;
+}
+
+.background-pink2 {
+    background-color: #FF43FA;
+}
+
+.background-pink3 {
+    background-color: #F77BFF;
+}
+
+.background-pink4 {
+    background-color: #FCA4FF;
+}
+
+.background-pink5 {
+    background-color: #F9C3FF;
+}
+
+/* textos */
+
+.text-black {
+    color: #000000
+}
+
+.text-white {
+    color: #FFFFFF
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.textLeft {
+    text-align: left;
+}
+
+/* Display */
+
+.display.flex {
+    display: flex;
+}
+
+.btn-primary {
+  background-color: #FF43FA;
+  --bs-btn-hover-bg: #FF00F2;
+
+}
+
+.btn-outline-secondary{
+    --bs-btn-hover-bg: #FCA4FF;
+}
